@@ -1,36 +1,31 @@
-//lIBRERIAS
-
+// blackjackdefinitivo.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
+//
+using namespace std;
+//Librerias
+#include <iostream>
 #include <iostream>
 #include <stdlib.h>
 #include <windows.h>
 #include<time.h>
 
-//std
+//Variables
+bool diamantes[13];
 
-using namespace std;
+bool corazones[13];
 
-//VARIABLES GLOBALES
+bool treboles[13];
 
-int diamantes[13];
-
-int corazones[13];
-
-int treboles[13];
-
-int picas[13];
+bool picas[13];
 
 
-string title = "|| Bienvendio al CASINO TO GOLFO ||";
+string title = "|| BIENVENIDO AL CASINO TO GOLFO ||";
 
 
 int choosePalo;
 
 int chooseNum;
 
-bool disponible = true;
-
 //VARIABLES USER
-
 
 string userName;
 
@@ -42,390 +37,251 @@ string nameCrupier = "Esteban";
 
 int croupierPoint = 0;
 
-int crupierPlaying = 0;
+//Funciones
 
-void arrayValores(int(&palos)[13]) {
+void welcome() {
+	cout << "\t \t\t\t\t "<< title << "\n\n";
+
+	cout << "\tCual es tu nombre?: ";
+	cin >> userName;
+
+	cout << "\tComenzamos " << userName <<"\n\n";
+}
+
+void arrayValores(bool(&palos)[13]) {
 	for (int i = 0; i < 13; i++)
 	{
-		palos[i] = 1;
+		palos[i] = true;
 	}
 }
-void welcome(string& name) {
-	cout << title;
-	cout << "Como te llamas?: ";
-	cin >> name;
 
-}
-int repartirCartasUser(int& points, string name) {
-
-	int choosePalo = rand() % 4;
-
-	int chooseNum = rand() % (13);
-
-
-	do {
-		if (choosePalo == 0 && diamantes[chooseNum] == 1) {
-			diamantes[chooseNum] = 0;
-		}
-		else if (choosePalo == 1 && picas[chooseNum] == 1) {
-			picas[chooseNum] = 0;
-
-		}
-		else if (choosePalo == 2 && treboles[chooseNum] == 1) {
-			treboles[chooseNum] = 0;
-
-		}
-		else if (choosePalo == 3 && corazones[chooseNum] == 1) {
-			corazones[chooseNum] = 0;
-		}
-		else
+void checkNum (string name, int& card, int& point, string palo) {
+	int valorA;
+	if (name == "Esteban") {
+		if (card == 0)
 		{
-			disponible = false;
-			choosePalo = rand() % 4;
-			chooseNum = rand() % (13);
-		}
-	} while (disponible);
-
-	int valor;
-		if (chooseNum == 0) {
-			cout << " Que valor quieres? :";
-			
-			cin >> valor;
-			if (valor == 11) {
-				valor = 11;
+			if (point + 11 > 21)
+			{
+				point += 1;
 			}
-			else {
-				valor = 1;
+			else
+			{
+				point += 11;
 			}
 		}
-		else if (chooseNum >= 1 && chooseNum <= 9) {
-			valor = chooseNum + 1;
-
-		}
-		else if (chooseNum >= 10) {
-
-			valor = 10;
-		}
-
-
-
-	switch (choosePalo)
-	{
-	case 0: {
-		if (chooseNum == 0) {
-			cout << "\nAl " << name << " le ha tocado un A de Diamantes \n";
-		}
-		else if (chooseNum == 10)
+		else if (card >= 10 && card <= 12)
 		{
-			cout << "\nAl " << name << " le ha tocado un J de Diamantes \n";
-		}
-		else if (chooseNum == 11)
-		{
-			cout << "\nAl " << name << " le ha tocado un Q de Diamantes \n";
-		}
-		else if (chooseNum == 12)
-		{
-			cout << "\nAl " << name << " le ha tocado un K de Diamantes \n";
+			if (card == 10)
+			{
+				cout << "\n\tA  " << name << " le ha tocado una J" << " de " << palo << "\n\n";
+			}
+			else if (card == 11)
+			{
+				cout << "\n\tA  " << name << " le ha tocado una Q" << " de " << palo << "\n\n";
+			}
+			else if (card == 12)
+			{
+				cout << "\n\tA  " << name << " le ha tocado una K" << " de " << palo << "\n\n";
+			}
+			point += 10;
+
 		}
 		else
 		{
-			cout << "\nAl " << name << " le ha tocado " << (chooseNum + 1) << " de Diamante";
+			cout << "\n\tA " << name << " le ha tocado " << card + 1 << " de " << palo << "\n\n";
+			point += card + 1;
+
 		}
-		points += chooseNum;
-		break;
 	}
-	case 1: {
-		if (chooseNum == 0) {
-			cout << "\nAl " << name << " le ha tocado un A de Picas \n";
-		}
-		else if (chooseNum == 10)
+	else{
+		if (card == 0)
 		{
-			cout << "\nAl " << name << " le ha tocado un J de Picas \n";
+			cout << "\n\tTe ha tocado un AS de " << palo << "\n\t\tQue valor quieres asignar ? : ";
+			cin >> valorA;
+			if (valorA == 1)
+			{
+				point += 1;
+
+			}
+			else if (valorA == 11)
+			{
+				point += 11;
+
+			}
 		}
-		else if (chooseNum == 11)
+		else if (card >= 10 && card <= 12)
 		{
-			cout << "\nAl " << name << " le ha tocado un Q de Picas \n";
-		}
-		else if (chooseNum == 12)
-		{
-			cout << "\nAl " << name << " le ha tocado un K de Picas \n";
+			if (card == 10)
+			{
+				cout << "\n\tA  " << name << " le ha tocado una J" << " de " << palo << "\n\n";
+			}
+			else if (card == 11)
+			{
+				cout << "\n\tA  " << name << " le ha tocado una Q" << " de " << palo << "\n\n";
+			}
+			else if (card == 12)
+			{
+				cout << "\n\tA  " << name << " le ha tocado una K" << " de " << palo << "\n\n";
+			}
+			point += 10;
+
 		}
 		else
 		{
-			cout << "\nAl " << name << " le ha tocado " << (chooseNum + 1) << " de Picas";
+			cout << "\n\tA " << name << " le ha tocado " << card + 1 << " de " << palo << "\n\n";
+			point += card + 1;
+
 		}
-		points += chooseNum;
-		break;
-	}
-	case 2: {
-		if (chooseNum == 0) {
-			cout << "\nAl " << name << " le ha tocado un A de Treboles \n";
 		}
-		else if (chooseNum == 10)
-		{
-			cout << "\nAl " << name << " le ha tocado un J de Treboles \n";
-		}
-		else if (chooseNum == 11)
-		{
-			cout << "\nAl " << name << " le ha tocado un Q de Treboles \n";
-		}
-		else if (chooseNum == 12)
-		{
-			cout << "\nAl " << name << " le ha tocado un K de Treboles \n";
-		}
-		else
-		{
-			cout << "\nAl " << name << " le ha tocado " << (chooseNum + 1) << " de Treboles";
-		}
-		points += chooseNum;
-		break;
-	}
-	case 3: {
-		if (chooseNum == 0) {
-			cout << "\nAl " << name << " le ha tocado un A de Corazones \n";
-		}
-		else if (chooseNum == 10)
-		{
-			cout << "\nAl " << name << " le ha tocado un J de Corazones \n";
-		}
-		else if (chooseNum == 11)
-		{
-			cout << "\nAl " << name << " le ha tocado un Q de Corazones \n";
-		}
-		else if (chooseNum == 12)
-		{
-			cout << "\nAl " << name << " le ha tocado un K de Corazones \n";
-		}
-		else
-		{
-			cout << "\nAl " << name << " le ha tocado " << (chooseNum + 1) << " de Corazones";
-		}
-		points += chooseNum;
-		break;
 	}
 
-
-	default:
-		break;
-	}
-	return points;
-}
-
-int repartirCartasCrupier(int& points, string name) {
-	int choosePalo = rand() % 4;
-
-	int chooseNum = rand() % (13);
-
-
-	do {
-		if (choosePalo == 0 && diamantes[chooseNum] == 1) {
-			diamantes[chooseNum] = 0;
-		}
-		else if (choosePalo == 1 && picas[chooseNum] == 1) {
-			picas[chooseNum] = 0;
-
-		}
-		else if (choosePalo == 2 && treboles[chooseNum] == 1) {
-			treboles[chooseNum] = 0;
-
-		}
-		else if (choosePalo == 3 && corazones[chooseNum] == 1) {
-			corazones[chooseNum] = 0;
-		}
-		else
-		{
-			disponible = false;
-			choosePalo = rand() % 4;
-			chooseNum = rand() % (14);
-		}
-	} while (disponible);
-
-	int valor;
-	if (chooseNum == 0) {
-		cout << " Que valor quieres? :";
-
-		cin >> valor;
-		if (valor == 11) {
-			valor = 11;
-		}
-		else {
-			valor = 1;
-		}
-	}
-	else if (chooseNum >= 1 && chooseNum <= 9) {
-		valor = chooseNum + 1;
-
-	}
-	else if (chooseNum >= 10) {
-
-		valor = 10;
-	}
-
-
-
-	switch (choosePalo)
-	{
-	case 0: {
-		if (chooseNum == 0) {
-			cout << "\nAl " << name << " le ha tocado un A de Diamantes \n";
-		}
-		else if (chooseNum == 10)
-		{
-			cout << "\nAl " << name << " le ha tocado un J de Diamantes \n";
-		}
-		else if (chooseNum == 11)
-		{
-			cout << "\nAl " << name << " le ha tocado un Q de Diamantes \n";
-		}
-		else if (chooseNum == 12)
-		{
-			cout << "\nAl " << name << " le ha tocado un K de Diamantes \n";
-		}
-		else
-		{
-			cout << "\nAl " << name << " le ha tocado " << (chooseNum + 1) << " de Diamante";
-		}
-		points += chooseNum;
-		break;
-	}
-	case 1: {
-		if (chooseNum == 0) {
-			cout << "\nAl " << name << " le ha tocado un A de Picas \n";
-		}
-		else if (chooseNum == 10)
-		{
-			cout << "\nAl " << name << " le ha tocado un J de Picas \n";
-		}
-		else if (chooseNum == 11)
-		{
-			cout << "\nAl " << name << " le ha tocado un Q de Picas \n";
-		}
-		else if (chooseNum == 12)
-		{
-			cout << "\nAl " << name << " le ha tocado un K de Picas \n";
-		}
-		else
-		{
-			cout << "\nAl " << name << " le ha tocado " << (chooseNum + 1) << " de Picas";
-		}
-		points += chooseNum;
-		break;
-	}
-	case 2: {
-		if (chooseNum == 0) {
-			cout << "\nAl " << name << " le ha tocado un A de Treboles \n";
-		}
-		else if (chooseNum == 10)
-		{
-			cout << "\nAl " << name << " le ha tocado un J de Treboles \n";
-		}
-		else if (chooseNum == 11)
-		{
-			cout << "\nAl " << name << " le ha tocado un Q de Treboles \n";
-		}
-		else if (chooseNum == 12)
-		{
-			cout << "\nAl " << name << " le ha tocado un K de Treboles \n";
-		}
-		else
-		{
-			cout << "\nAl " << name << " le ha tocado " << (chooseNum + 1) << " de Treboles";
-		}
-		points += chooseNum;
-		break;
-	}
-	case 3: {
-		if (chooseNum == 0) {
-			cout << "\nAl " << name << " le ha tocado un A de Corazones \n";
-		}
-		else if (chooseNum == 10)
-		{
-			cout << "\nAl " << name << " le ha tocado un J de Corazones \n";
-		}
-		else if (chooseNum == 11)
-		{
-			cout << "\nAl " << name << " le ha tocado un Q de Corazones \n";
-		}
-		else if (chooseNum == 12)
-		{
-			cout << "\nAl " << name << " le ha tocado un K de Corazones \n";
-		}
-		else
-		{
-			cout << "\nAl " << name << " le ha tocado " << (chooseNum + 1) << " de Corazones";
-		}
-		points += chooseNum;
-		break;
-	}
-
-
-	default:
-		break;
-	}
-	return points;
-}
-
-
-int main() {
-    arrayValores(diamantes);
-    arrayValores(treboles);
-    arrayValores(corazones);
-    arrayValores(picas);
-
-
+void avalibleCard(int& card, string& palo) {
 	srand(time(NULL));
+	int choosePalo = rand() % 4;
+
+	int chooseNum = rand() % (13);
+
+	bool disponible = true;
+
+	while (disponible)
+	{
+		if (choosePalo == 0 && diamantes[chooseNum] == true)
+		{
+			diamantes[chooseNum] = false;
+			card = chooseNum;
+			palo = " Diamante";
+		
+			disponible = false;
+		}
+		else if (choosePalo == 1 && picas[chooseNum] == true)
+		{
+			picas[chooseNum] = false;
+			card = chooseNum;
+			palo = " Picas";
+			disponible = false;
+		}
+		else if (choosePalo == 2 && treboles[chooseNum] == true)
+		{
+			treboles[chooseNum] = false;
+			card = chooseNum;
+			palo = " Treboles";
+			disponible = false;
+		}
+		else if (choosePalo == 3 && corazones[chooseNum] == true)
+		{
+			corazones[chooseNum] = false;
+			card = chooseNum;
+			palo = " Corazones";
+			disponible = false;
+		}
+		else
+		{
+			choosePalo = rand() % 4;
+
+			chooseNum = rand() % (13);
+
+		}
+	}
+}
+
+int main()
+{
+	welcome();
+
+	arrayValores(diamantes);
+	arrayValores(treboles);
+	arrayValores(corazones);
+	arrayValores(picas);
+
+	int valor;
+
+	string palo;
+
+	cout << "\n\tRepartimos las primeras cartas\n\n";
+
+	for (size_t i = 0; i < 2; i++)
+	{
+		avalibleCard(valor, palo);
+
+		checkNum(userName, valor, userPoint, palo);
+	}
+
+	avalibleCard(valor, palo);
+	checkNum(nameCrupier ,valor, croupierPoint, palo);
+
+	cout << "\n\tCrupier tiene " << croupierPoint;
 
 	bool userPlays = true;
-	bool crupierPlay = true;
 
-	//INICIO DEL BLACKJACK Y BIENVENIDA
-
-
-	welcome(userName);
-
-	for (int i = 0; i < 2; i++)
+	while (userPlays)
 	{
-		userPoint = repartirCartasUser(userPoint, userName);
-	}
-
-	croupierPoint = repartirCartasCrupier(croupierPoint, nameCrupier);
-	cout << croupierPoint;
-
-	while (userPlays) {
-		cout << "\nQuieres otra carta? [1] Si / [2] No : ";
+		cout << "\n\t\tQuieres otra carta? [1]Si / [2]No: ";
 		int option;
 		cin >> option;
-		if (option == 2) {
-			cout << "\nFin de tu turno\n";
+		if (option == 1)
+		{
+			avalibleCard(valor, palo);
+			checkNum(userName, valor, userPoint, palo);
+		}
+		else
+		{
 			userPlays = false;
 		}
-		else {
-			userPoint = repartirCartasUser(userPoint, userName);
+		
+	}
+
+
+	bool crupierPlays = true;
+
+	while (croupierPoint < 21 && crupierPlays)
+	{
+		if (croupierPoint < 18)
+		{
+			avalibleCard(valor, palo);
+			checkNum(nameCrupier, valor, croupierPoint, palo);
+		}
+		else
+		{
+			crupierPlays = false;
 		}
 	}
 
-	while (crupierPlay && croupierPoint < 21) {
-		if (croupierPoint < 18) {
-			croupierPoint = repartirCartasCrupier(croupierPoint, nameCrupier);
-		}
-		else {
-			crupierPlay = false;
-		}
+	cout << "\n\tEl crupier tiene " << croupierPoint << " puntos\n\n";
+
+	cout << "\n\tEl " << userName<<" tiene " << userPoint << " puntos\n\n";
+
+	bool userWin = true;
+
+	bool empate = false;
+
+	if (userPoint > 21)
+	{
+		userWin = false;
+	}
+	else if (croupierPoint > 21)
+	{
+		userWin = true;
+	}
+	else if (userPoint > croupierPoint && userPoint <= 21)
+	{
+		userWin = true;
+	}
+	else if (croupierPoint > userPoint && croupierPoint <= 21)
+	{
+		userWin = false;
 	}
 
-	cout << userName << "\n tiene " << userPoint << " puntos\n";
-	cout << nameCrupier << " \ntiene " << croupierPoint << " puntos\n";
-
-
-	if (userPoint > croupierPoint || (croupierPoint > 21 && userPoint < 21)) {
-		cout << userName << " ha ganado";
+	if (userWin && !empate)
+	{
+		cout <<"\t\t" << userName << " ha ganado";
 	}
-	else if (userPoint < croupierPoint || (croupierPoint < 21 || userPoint > 21)) {
-		cout << userName << " ha perdido";
+	else if (!userWin && !empate)
+	{
+		cout << "\t\t" << userName << " ha perdido";
 	}
 	else
 	{
-		cout << "Empate";
+		cout << "\t\t" << "Han empatado";
 	}
-}
 
+}
