@@ -367,6 +367,10 @@ int repartirCartasCrupier(int& points, string name) {
 
 
 int main() {
+    arrayValores(diamantes);
+    arrayValores(treboles);
+    arrayValores(corazones);
+    arrayValores(picas);
 
 
 	srand(time(NULL));
